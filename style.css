@@ -4,17 +4,44 @@ body{
     transition: 0.3s;
 }
 
+#title{
+    border: 2px white solid;
+    background-color: white;
+    cursor: default;
+    margin: 0 50px 0 0px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+#demo{
+    color: orange;
+    text-indent: 10px;
+}
+
+#time{
+    color: white;
+    text-indent: 10px;
+}
+
+#watch-list{
+    display: flex;
+    flex-direction: row;
+}
+
 #watch{
     display: block;
     font-family: sans-serif;
-    color: aliceblue;
+    color: red;
     text-indent: 10px;
     cursor: pointer;
+    animation: blink 1s linear infinite;
     transition: 0.4s;
 }
 
-#watch:hover{
-    color: red;
+@keyframes blink{
+    0%{opacity: 0;}
+    50%{opacity: .5;}
+    100%{opacity: 1;}
 }
 
 .btn{
