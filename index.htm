@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <script src="scetch.js"></script>
+    <p id="watch"></p>
+    <div id="map"></div>
+    <script>
+
+      function rand(){
+        let random = Math.floor(Math.random() * max_cm);
+        return random;
+      }
+      
+
+      var prefix = 'http://maps.google.com/mapfiles/ms/icons/';
+      var weather = 'sunny'
+      var max_cm = 80;
+      var descr = 'Online';
+      var map;
+      var watch_list = [];
+      var markers = [];
+      function initMap() {
+        var simia = [
+            { name:"Sensor Αικατερίνης 1", lat:38.077227, lng:23.487771, cm:rand() },
+            { name:"Sensor K2", lat:38.076997, lng:23.490283, cm:rand() },
+            { name:"Sensor K3", lat:38.076491, lng:23.493966, cm:rand() },
+            { name:"Sensor S1", lat:38.078072, lng:23.494993, cm:rand() },
+            { name:"Sensor S2", lat:38.075027, lng:23.496858, cm:rand() },
+            { name:"Dimarxeio", lat:38.073883, lng:23.500301, cm:rand() },
+            { name:"Sensor S3", lat:38.072372, lng:23.508611, cm:rand() },
+            { name:"Sensor K4", lat:38.077151, lng:23.482784, cm:rand() },
+            { name:"Sensor T3", lat:38.079148, lng:23.494307, cm:rand() },
+            { name:"Sensor T2", lat:38.080391, lng:23.493507, cm:rand() },
+            { name:"Sensor T1", lat:38.078002, lng:23.499613, cm:rand() },
+            { name:"Sensor T2", lat:38.080391, lng:23.493507, cm:rand() },
+        ]
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 38.076, lng: 23.496}, //orizoume to center tou map
+          zoom: 16 //init zoom level
+        });
+        for(let marker of simia){
+            if (marker.cm > 55 * max_cm / 100){
+              if (marker.cm > 70 * max_cm / 100){
+                suffix = 'purple-dot.png';
+                descr = 'Fatal Error.'
+                watch_list.push(marker.name)
+              }else{
+                suffix = 'yellow-dot.png';
+                descr = 'Warning.'
+                watch_list.push(marker.name)
+              }
+            
+            }else if(marker.cm < 55 * max_cm / 100){
+              suffix = 'green-dot.png';
+              descr = 'Normal.'
+            }
+
+            var map_marker = new google.maps.Marker({
+                position: {lat:marker.lat, lng:marker.lng},
+                map: map,
+                title: marker.name + '\n' + descr,
+                icon: {                             
+                  url: prefix + suffix
+                }
+            });
+            markers.push(map_marker);
+            console.log(watch_list);
+                   
+            
+        }
+        let issues = watch_list.length
+        let text = document.getElementById('watch').innerHTML = watch_list;
+        document.getElementById('watch').addEventListener('click', function(){
+          document.getElementById('watch').innerHTML = '\n\n\n\nWeather: ' + weather; 
+        })
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"
+    async defer></script>
+
+  </body>
+</html>
